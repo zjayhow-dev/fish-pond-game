@@ -1,0 +1,30 @@
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor temporary files
+*.swp
+*.swo
+*~
+
+# Logs and caches
+*.log
+.cache/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local dependencies and Python environments
+node_modules/
+.venv/
+venv/
+
+# Local environment configuration (keep reusable templates)
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
