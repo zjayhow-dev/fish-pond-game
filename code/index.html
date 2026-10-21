@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#133d35">
+  <meta name="description" content="一池锦鲤，一场拾光之旅。点击水面投喂，在荷塘里开启十二段轻盈旅程。">
+  <title>碧池拾光 · 一池锦鲤，一场拾光之旅</title>
+  <link rel="icon" href="assets/lotus.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/game.css">
+  <script defer src="js/levels.js"></script>
+  <script defer src="js/storage.js"></script>
+  <script defer src="js/taptap-adapter.js"></script>
+  <script defer src="js/engine.js"></script>
+  <script defer src="js/renderer.js"></script>
+  <script defer src="js/game.js"></script>
+</head>
+<body>
+  <svg class="symbol-library" aria-hidden="true"><defs>
+    <symbol id="i-lotus" viewBox="0 0 32 32"><path d="M16 25C6 23 3 15 4 10c6 0 10 4 12 9 2-5 6-9 12-9 1 5-2 13-12 15Z"/><path d="M16 23C9 17 10 9 16 3c6 6 7 14 0 20Z"/><path d="M3 24c7 7 19 7 26 0"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="m11 4-6 5H2v6h3l6 5Zm4 4c3 2 3 6 0 8m3-11c5 4 5 10 0 14"/></symbol>
+    <symbol id="i-muted" viewBox="0 0 24 24"><path d="m11 4-6 5H2v6h3l6 5Zm5 5 6 6m0-6-6 6"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+    <symbol id="i-cup" viewBox="0 0 24 24"><path d="M7 3h10v7a5 5 0 0 1-10 0Zm0 2H3v3a4 4 0 0 0 4 4m10-7h4v3a4 4 0 0 1-4 4m-5 3v6m-5 0h10"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="3" y="15" width="6" height="6" rx="1"/><rect x="15" y="15" width="6" height="6" rx="1"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 1 1 4 3c-1 .5-1 1-1 2m0 3h.01"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 2C10 7 5 10 5 15a7 7 0 0 0 14 0c0-5-5-8-7-13Z"/></symbol>
+  </defs></svg>
+  <main id="stage" class="stage" aria-label="碧池拾光锦鲤池塘">
+    <div class="pond-background"></div><div class="pond-shade"></div>
+    <canvas id="pond" aria-label="池塘投喂区域，点击水面投喂。键盘用户可按方向键移动投喂点，F 键投喂。" tabindex="0"></canvas>
+    <header class="topbar">
+      <div class="brand"><svg class="brand-mark"><use href="#i-lotus"/></svg><div><div class="brand-name">碧池拾光</div><span id="chapterLabel">荷风轻拂 · 锦鲤相伴</span></div></div>
+      <div id="gameStats" class="game-stats" hidden><div><small>本关得分</small><strong id="score">0</strong></div><span class="stat-divider"></span><div><small>剩余时间</small><strong id="time">01:00</strong></div></div>
+      <div class="system-actions"><button id="soundButton" class="icon-button" aria-label="开启音效" aria-pressed="false"><svg><use href="#i-muted"/></svg></button><button id="pauseButton" class="icon-button" aria-label="暂停游戏" hidden><svg><use href="#i-pause"/></svg></button></div>
+    </header>
+    <section id="menu" class="menu" aria-labelledby="mainTitle">
+      <div class="eyebrow"><span></span> A MOMENT BY THE POND</div>
+      <h1 id="mainTitle">碧池<span>拾光</span></h1>
+      <p class="menu-subtitle">一池锦鲤，一场拾光之旅</p>
+      <p class="menu-description">把片刻交给荷塘。<br>点落一颗鱼食，与锦鲤一起追逐微光。</p>
+      <button id="continueButton" class="primary menu-primary"><span><small>开启你的荷塘时光</small><b id="continueLabel">继续第 1 关</b></span><svg><use href="#i-arrow"/></svg></button>
+      <nav class="menu-links" aria-label="游戏菜单"><button data-action="levels"><svg><use href="#i-grid"/></svg>选择关卡</button><button data-action="ranking"><svg><use href="#i-cup"/></svg>排行榜</button><button data-action="help"><svg><use href="#i-help"/></svg>玩法说明</button></nav>
+    </section>
+    <aside id="journeyCard" class="journey-card"><span class="eyebrow">YOUR LITTLE JOURNEY</span><div><strong id="journeyNumber">01</strong><span>/ 12 段荷塘时光</span></div><h2 id="journeyName">初见荷塘</h2><p id="journeyNote">从一圈涟漪开始，遇见池中的小伙伴。</p><div class="journey-dots" id="journeyDots"></div></aside>
+    <section id="hud" class="hud" hidden>
+      <div class="objective glass"><div class="objective-title"><span id="levelLabel">第一关 · 初见荷塘</span><span id="progressText">0 / 100</span></div><div id="progressBar" class="progress-track" role="progressbar" aria-label="目标分数" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="progressFill"></div></div><div class="food-count"><svg><use href="#i-drop"/></svg><span>剩余投喂</span><b id="feeds">7</b><span class="food-dots" id="foodDots"></span></div></div>
+      <div class="feeding-hint" id="feedingHint">点击水面投喂，吸引锦鲤追食</div>
+      <nav class="quick-actions"><button class="icon-button" data-action="ranking" aria-label="排行榜"><svg><use href="#i-cup"/></svg></button><button class="icon-button" data-action="levels" aria-label="选择关卡"><svg><use href="#i-grid"/></svg></button><button class="icon-button" data-action="help" aria-label="玩法说明"><svg><use href="#i-help"/></svg></button></nav>
+    </section>
+    <div id="combo" class="combo" hidden><span id="comboNumber">2</span><small>连击 · 锦鲤逐光</small></div>
+    <footer id="menuFooter" class="menu-footer"><span><i></i> 此刻，正适合放慢一点</span><span id="storageStatus">本机存档 · 进度自动保存</span></footer>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+    <div id="overlay" class="overlay" hidden><section id="panel" class="panel" role="dialog" aria-modal="true" aria-labelledby="panelTitle" tabindex="-1"></section></div>
+    <div id="orientation" class="orientation"><span>↻</span><div><b>请横屏体验</b><small>让荷塘在眼前舒展开来</small></div><button id="dismissOrientation" aria-label="关闭横屏提示">×</button></div>
+  </main>
+</body>
+</html>
