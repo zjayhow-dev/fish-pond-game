@@ -17,6 +17,8 @@ python -m http.server 8000 --bind 127.0.0.1
 ## 已实现
 
 - 十二关完整配置：目标分数、时间、投喂次数与文档表格一致。
+- 主菜单鱼类图谱：30 种艺术花色、5 档稀有度、4 类鱼体轮廓和大中小体型；支持外观预览、稀有度筛选与解锁条件查询。
+- 初始 6 种花色，每通关一关解锁 2 种；通关结算展示新鱼，已解锁花色进入实际池塘鱼群。旧存档自动继承收藏进度。
 - 主菜单、3×4 选关、暂停、帮助、通关／失败、重试与终章结算。
 - 动态锦鲤平滑转向追食、食粒消耗、有限投喂、连击、得分浮字和水波粒子。
 - 本机存档、关卡解锁、各关最佳成绩、旅程分数、昵称、音效设置与最多 20 条本机榜单。
@@ -39,6 +41,8 @@ index.html                 根入口
 code/index.html            游戏页面
 code/css/game.css          布局、主题、弹窗与响应式样式
 code/js/levels.js          12 关配置
+code/js/fish-catalog.js    30 种花色、稀有度与通关解锁规则
+code/js/fish-art.js        池塘与图谱共用的 Canvas 鱼体绘制
 code/js/engine.js          可独立测试的规则与鱼群仿真
 code/js/renderer.js        Canvas 锦鲤与水波／粒子
 code/js/game.js            生命周期、音效和 UI 交互
@@ -47,9 +51,10 @@ code/js/taptap-adapter.js  统一平台服务适配入口
 assets/backgrounds/       生成的纯池塘背景
 assets/prompts/           美术素材的原始提示词、修订与规格记录
 assets/README.md          素材索引与使用规范
-code/assets/              荷花图标与停用的历史截图底图
+assets/icons/             荷花等页面图标
 doc/                      原设计文档、接入说明与验证记录
 tests/game.test.cjs        Node 内置测试，无外部依赖
+tests/fish-catalog.test.cjs 图谱、旧存档兼容、逐关鱼群回归测试
 ```
 
 ## 测试
@@ -57,10 +62,10 @@ tests/game.test.cjs        Node 内置测试，无外部依赖
 安装 Node.js 后运行：
 
 ```bash
-node --test tests/game.test.cjs
+node --test tests/game.test.cjs tests/fish-catalog.test.cjs
 ```
 
-测试覆盖规则、存档恢复、排行榜排序、暂停和失败状态、适配层异常，以及 12 关 × 10 个随机种子的可达成性模拟。它不替代真实设备和 TapTap 容器测试。详情见 `doc/验证记录.md`。
+22 项测试覆盖规则、存档恢复、排行榜排序、暂停和失败状态、适配层异常、30 种花色与末关解锁，以及固定初始鱼群和逐关扩充鱼群的两组可达成性模拟（各 12 关 × 10 个随机种子）。它不替代真实设备和 TapTap 容器测试。详情见 `doc/验证记录.md`；完整花色表见 `doc/鱼类图谱.md`。
 
 ## TapTap 接入状态
 
@@ -70,6 +75,6 @@ node --test tests/game.test.cjs
 
 ## 素材与已知限制
 
-当前背景为 `assets/backgrounds/pond-jade-v1.png`，使用内置 `image_gen` 按用户提示词生成：正交顶视浅玉色池塘，中央开阔，无动物、文字或 UI。原始提示词和一次定稿修订保存在 `assets/prompts/pond-jade-v1.md`。目标尺寸 2560×1440，工具实际输出为 1672×941，已在资源记录中注明；未标为原生 2560×1440。此前的截图裁切底图保留在 `code/assets/pond-scene.jpg`，页面已不再使用。游戏锦鲤全部由 Canvas 动态绘制。
+当前背景为 `assets/backgrounds/pond-jade-v1.png`，使用内置 `image_gen` 按用户提示词生成：正交顶视浅玉色池塘，中央开阔，无动物、文字或 UI。原始提示词和一次定稿修订保存在 `assets/prompts/pond-jade-v1.md`。目标尺寸 2560×1440，工具实际输出为 1672×941，已在资源记录中注明；未标为原生 2560×1440。此前的截图裁切底图已删除，页面图标统一存放在 `assets/icons/`。游戏锦鲤全部由 Canvas 动态绘制。
 
 当前是可玩的首版原型：关卡具备可达成性，但难度、帧率、真实音频输出、跨设备行为与 TapTap 容器适配仍需实机验证。存档只属于当前浏览器与来源；存储受限时会提示，不能保证刷新保留。

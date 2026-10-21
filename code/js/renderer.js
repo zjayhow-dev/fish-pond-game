@@ -1,7 +1,6 @@
 (function (root) {
   'use strict';
   const TAU = Math.PI * 2;
-  const palettes = [ ['#f6eee0','#d95e3f'], ['#f3df98','#c99b39'], ['#eee9d9','#303b36'], ['#efdfc9','#c84535'], ['#e0cf9d','#b79345'] ];
   class PondRenderer {
     constructor(canvas, engine) {
       this.canvas = canvas; this.context = canvas.getContext('2d'); this.engine = engine;
@@ -40,29 +39,12 @@
       this.particles.forEach(p => { p.age += dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 13 * dt; }); this.particles = this.particles.filter(p => p.age < p.lifetime);
     }
     fish(fish) {
-      const ctx = this.context, size = fish.size, tail = Math.sin(fish.phase) * size * .15;
-      const [body, pattern] = palettes[fish.pattern];
+      const ctx = this.context;
       const scaleX = this.canvas.width / 1600, scaleY = this.canvas.height / 900;
-      // Preserve the fish silhouette even when the portrait hint is dismissed.
       ctx.save(); ctx.translate(fish.x, fish.y);
       ctx.scale(Math.sqrt(scaleY / scaleX), Math.sqrt(scaleX / scaleY));
       ctx.rotate(Math.atan2(Math.sin(fish.angle) * scaleY, Math.cos(fish.angle) * scaleX));
-      ctx.shadowColor = 'rgba(9,37,30,.35)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 9;
-      ctx.fillStyle = body;
-      ctx.beginPath(); ctx.moveTo(-size * .56, 0); ctx.quadraticCurveTo(-size * .94, tail - size * .15, -size * 1.35, tail - size * .34); ctx.quadraticCurveTo(-size * 1.15, tail, -size * 1.35, tail + size * .34); ctx.quadraticCurveTo(-size * .93, tail + size * .15, -size * .56, 0); ctx.fill();
-      ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
-      const opacity = ctx.globalAlpha;
-      ctx.globalAlpha = opacity * .55;
-      for (const side of [-1, 1]) { ctx.beginPath(); ctx.moveTo(size * .15, side * size * .17); ctx.quadraticCurveTo(-size * .1, side * size * .68, -size * .37, side * size * .4); ctx.lineTo(-size * .12, 0); ctx.fill(); }
-      ctx.globalAlpha = opacity;
-      ctx.beginPath(); ctx.moveTo(size, 0); ctx.bezierCurveTo(size * .8, -size * .42, -size * .1, -size * .37, -size * .82, 0); ctx.bezierCurveTo(-size * .1, size * .37, size * .8, size * .42, size, 0); ctx.closePath();
-      const gradient = ctx.createLinearGradient(0, -size * .35, 0, size * .35); gradient.addColorStop(0, body); gradient.addColorStop(.45, '#faf1cf'); gradient.addColorStop(1, body); ctx.fillStyle = gradient; ctx.fill();
-      ctx.save(); ctx.clip(); ctx.fillStyle = pattern;
-      ctx.beginPath(); ctx.ellipse(size * .51, -size * .07, size * .24, size * .23, -.3, 0, TAU); ctx.fill();
-      ctx.beginPath(); ctx.ellipse(-size * .13, size * .08, size * .25, size * .24, .65, 0, TAU); ctx.fill();
-      if (fish.pattern === 3) { ctx.fillStyle = '#354039'; ctx.beginPath(); ctx.ellipse(-size * .49, -.04 * size, size * .12, size * .19, .3, 0, TAU); ctx.fill(); }
-      ctx.strokeStyle = 'rgba(255,255,232,.35)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(size * .7, 0); ctx.quadraticCurveTo(0, -size * .04, -size * .6, 0); ctx.stroke(); ctx.restore();
-      ctx.fillStyle = '#24352e'; for (const side of [-1, 1]) { ctx.beginPath(); ctx.arc(size * .73, side * size * .15, 1.7, 0, TAU); ctx.fill(); }
+      PondFishArt.draw(ctx, PondFishCatalog.get(fish.varietyId), fish.size, fish.phase, fish.variation);
       ctx.restore();
     }
     draw() {

@@ -8,13 +8,15 @@
       this.random = random; this.state = 'menu'; this.level = root.PondLevels[0];
       this.fish = []; this.food = []; this.events = []; this.time = 0; this.score = 0; this.feeds = 0;
       this.elapsed = 0; this.combo = 0; this.maxCombo = 0; this.lastEat = -Infinity; this.foodId = 0;
+      this.collectionProgress = 0;
       this.seedFish(12);
     }
     seedFish(count) {
-      this.fish = Array.from({ length: count }, (_, i) => ({
+      const school = root.PondFishCatalog.school(count, this.collectionProgress, this.random);
+      this.fish = school.map(variety => ({
         x: 250 + this.random() * 1100, y: 190 + this.random() * 500,
         angle: this.random() * TAU, phase: this.random() * TAU,
-        size: 29 + this.random() * 17, pattern: i % 5, speed: .8 + this.random() * .45,
+        size: variety.size * (.84 + this.random() * .3), varietyId: variety.id, variation: this.random() * TAU, speed: .8 + this.random() * .45,
         cooldown: this.random() * .3, wander: this.random() * TAU,
         wanderTime: 0, targetId: null
       }));
@@ -70,7 +72,7 @@
         fish.x = clamp(fish.x + Math.cos(fish.angle) * speed * dt, 40, WIDTH - 40);
         fish.y = clamp(fish.y + Math.sin(fish.angle) * speed * dt, 100, HEIGHT - 70);
         fish.phase += dt * (target ? 8 : 3.6);
-        if (playing && target && nearest < fish.size * .65 + 15 && fish.cooldown <= 0) {
+        if (playing && target && nearest < 38 && fish.cooldown <= 0) {
           target.remaining--; fish.cooldown = .48;
           this.combo = this.elapsed - this.lastEat <= this.level.comboWindow ? this.combo + 1 : 1;
           this.lastEat = this.elapsed; this.maxCombo = Math.max(this.maxCombo, this.combo);

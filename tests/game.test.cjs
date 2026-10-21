@@ -1,6 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 require('../code/js/levels.js');
+require('../code/js/fish-catalog.js');
 require('../code/js/storage.js');
 require('../code/js/taptap-adapter.js');
 require('../code/js/engine.js');
