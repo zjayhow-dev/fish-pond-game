@@ -12,7 +12,7 @@ python -m http.server 8000 --bind 127.0.0.1
 
 浏览器访问 <http://127.0.0.1:8000/>。也可双击根目录 `index.html`；`file://` 下各浏览器的存储行为可能不同，推荐通过 HTTP 运行。
 
-`index.html` 自动进入 `code/index.html`。部署静态站点时仅需根入口和完整 `code/` 目录；不要将原始参考资料、测试或其他工作区文件作为公开发布内容。
+`index.html` 自动进入 `code/index.html`。部署静态站点时需包含根入口、完整 `code/` 和根目录 `assets/`；不要将原始参考资料、测试或其他工作区文件作为公开发布内容。
 
 ## 已实现
 
@@ -44,7 +44,10 @@ code/js/renderer.js        Canvas 锦鲤与水波／粒子
 code/js/game.js            生命周期、音效和 UI 交互
 code/js/storage.js         存档校验、成绩和本机榜单
 code/js/taptap-adapter.js  统一平台服务适配入口
-code/assets/              池塘底图与荷花图标
+assets/backgrounds/       生成的纯池塘背景
+assets/prompts/           美术素材的原始提示词、修订与规格记录
+assets/README.md          素材索引与使用规范
+code/assets/              荷花图标与停用的历史截图底图
 doc/                      原设计文档、接入说明与验证记录
 tests/game.test.cjs        Node 内置测试，无外部依赖
 ```
@@ -67,6 +70,6 @@ node --test tests/game.test.cjs
 
 ## 素材与已知限制
 
-场景底图从工作区提供的 `基础图片.png` 左上 `(0,0,2000,1125)` 区域裁切并缩放为 1920×1080，移除了原截图右侧和底部控制面板；未复制参考项目源码。原图自带的鱼、蝴蝶和水光仍属于静态背景，新增的清晰锦鲤为 Canvas 动态角色。后续可换为不含鱼群的纯场景图。
+当前背景为 `assets/backgrounds/pond-jade-v1.png`，使用内置 `image_gen` 按用户提示词生成：正交顶视浅玉色池塘，中央开阔，无动物、文字或 UI。原始提示词和一次定稿修订保存在 `assets/prompts/pond-jade-v1.md`。目标尺寸 2560×1440，工具实际输出为 1672×941，已在资源记录中注明；未标为原生 2560×1440。此前的截图裁切底图保留在 `code/assets/pond-scene.jpg`，页面已不再使用。游戏锦鲤全部由 Canvas 动态绘制。
 
 当前是可玩的首版原型：关卡具备可达成性，但难度、帧率、真实音频输出、跨设备行为与 TapTap 容器适配仍需实机验证。存档只属于当前浏览器与来源；存储受限时会提示，不能保证刷新保留。
